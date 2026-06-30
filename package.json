@@ -1,0 +1,12 @@
+{
+  "name": "dispatch-html",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "live-server --port=3000 --open=stock.html",
+    "start": "npm run dev"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grover Sweets PVT.LTD. Inventory ERP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="loginPage" class="login-page">
+    <div class="login-shell">
+        <div class="login-side">
+            <div class="brand-block">
+                <div class="brand-mark"><i class="fas fa-snowflake"></i></div>
+                <div>
+                    <h1>Grover Sweets</h1>
+                    <p>Frozen Inventory Management System</p>
+                </div>
+            </div>
+            <div class="side-copy">
+                <h2>Welcome Back!</h2>
+                <p>Securely login to manage cold-chain stock, production batches, dispatches, returns, and damage records.</p>
+            </div>
+        </div>
+        <div class="login-card">
+            <div class="login-card-head">
+                <h2>Sign in</h2>
+                <p>Enter your credentials to continue.</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="input-wrap">
+                    <i class="fas fa-user"></i>
+                    <input id="loginUsername" type="text" placeholder="Username" required>
+                </div>
+                <div class="input-wrap input-password">
+                    <i class="fas fa-lock"></i>
+                    <input id="loginPassword" type="password" placeholder="Password" required>
+                    <button type="button" class="password-toggle" tabindex="-1"><i class="fas fa-eye"></i></button>
+                </div>
+                <div class="login-options">
+                    <label><input type="checkbox"> Remember Me</label>
+                    <a href="#">Forgot?</a>
+                </div>
+                <button class="btn btn-login" type="submit">LOGIN</button>
+                <div class="login-divider"><span>OR</span></div>
+                <button type="button" class="btn btn-biometric"><i class="fas fa-fingerprint"></i> Login with Biometrics</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-ice-cream"></i>
+            <h2>Grover Sweets PVT.LTD.</h2>
+        </div>
+        <div class="profile">
+            <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff">
+            <h3>Administrator</h3>
+            <p>Inventory Manager</p>
+        </div>
+        <ul>
+            <li><button class="nav-item active" data-panel="dashboard"><i class="fas fa-chart-pie"></i><span>Dashboard</span></button></li>
+            <li><button class="nav-item" data-panel="item-master"><i class="fas fa-boxes"></i><span>Item Master</span></button></li>
+            <li><button class="nav-item" data-panel="production"><i class="fas fa-industry"></i><span>Production</span></button></li>
+            <li><button class="nav-item" data-panel="batch-inventory"><i class="fas fa-cubes"></i><span>Batch Inventory</span></button></li>
+            <li><button class="nav-item" data-panel="dispatch"><i class="fas fa-truck-loading"></i><span>Dispatch</span></button></li>
+            <li><button class="nav-item" data-panel="returns"><i class="fas fa-undo"></i><span>Returns</span></button></li>
+            <li><button class="nav-item" data-panel="damage"><i class="fas fa-trash"></i><span>Damage</span></button></li>
+            <li><button class="nav-item" data-panel="stock-ledger"><i class="fas fa-warehouse"></i><span>Stock Ledger</span></button></li>
+            <li><button class="nav-item" data-panel="reports"><i class="fas fa-chart-line"></i><span>Reports</span></button></li>
+        </ul>
+    </aside>
+    <main class="main-content">
+        <header class="topbar">
+            <div class="left">
+                <button id="menuBtn"><i class="fas fa-bars"></i></button>
+                <h2>Grover Sweets Inventory Hub</h2>
+            </div>
+            <div class="search">
+                <input type="text" id="searchInput" placeholder="Search Item / Batch / Invoice">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="right">
+                <div id="currentDateTime"></div>
+                <button class="btn btn-secondary" id="logoutBtn" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+                <i class="fas fa-bell notification" id="notificationBell" title="Notifications"></i>
+                <i class="fas fa-moon darkMode" id="darkModeToggle" title="Toggle dark mode"></i>
+                <img src="https://ui-avatars.com/api/?name=Admin&background=1E88E5&color=fff">
+            </div>
+        </header>
+        <section class="page-title">
+            <h1>Grover Sweets Frozen Inventory System</h1>
+            <p>Production • Inventory • Dispatch • Returns • Damage • Reports</p>
+        </section>
+        <section class="tab-panels">
+            <div class="filters" style="padding:12px 25px; display:flex; gap:12px; align-items:center">
+                <select id="filterItem">
+                    <option value="">All Items</option>
+                </select>
+                <select id="filterStatus">
+                    <option value="all">All</option>
+                    <option value="near-expiry">Near Expiry</option>
+                    <option value="low-stock">Low Stock</option>
+                </select>
+                <input type="date" id="filterFrom">
+                <input type="date" id="filterTo">
+                <button class="btn" id="clearFilters">Clear</button>
+            </div>
+            <section id="dashboard" class="tab-content active">
+                <div class="dashboard-header">
+                    <div>
+                        <h2>Performance Overview</h2>
+                        <p>Real-time inventory snapshot, batch health, and dispatch activity for your frozen goods.</p>
+                    </div>
+                    <div class="dashboard-meta">
+                        <div><span>Last updated</span><strong id="currentDateTimeHeader">-</strong></div>
+                        <button class="btn btn-success" id="refreshDashboard">Refresh</button>
+                    </div>
+                </div>
+                <div class="dashboard-cards" id="dashboardCards"></div>
+                <div class="summary-grid dashboard-summary-grid">
+                    <div class="summary-box summary-highlight">
+                        <h3>Inventory Summary</h3>
+                        <div class="summary-stats">
+                            <div><span>Total Products</span><strong id="summaryProducts">0</strong></div>
+                            <div><span>Total Batches</span><strong id="summaryBatches">0</strong></div>
+                            <div><span>Total Stock</span><strong id="summaryStock">0 Kg</strong></div>
+                        </div>
+                        <div class="summary-stats small">
+                            <div><span>Total Dispatch</span><strong id="summaryDispatch">0 Kg</strong></div>
+                            <div><span>Total Returns</span><strong id="summaryReturns">0 Kg</strong></div>
+                            <div><span>Total Damage</span><strong id="summaryDamage">0 Kg</strong></div>
+                        </div>
+                    </div>
+                    <div class="summary-box summary-insights">
+                        <h3>Key Insights</h3>
+                        <ul>
+                            <li><strong id="insightExpiry">0</strong> batches expiring within 7 days</li>
+                            <li><strong id="insightLowStock">0</strong> low stock batches</li>
+                            <li><strong id="insightDispatch">0 Kg</strong> dispatched this cycle</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <section id="item-master" class="tab-content">
+                <div class="form-container">
+                    <h2 class="form-title">Item Master</h2>
+                    <form id="itemForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="itemName">Item Name</label><input id="itemName" type="text" required></div>
+                            <div class="form-group"><label for="itemUnit">Unit</label><input id="itemUnit" type="text" value="Kg" required></div>
+                            <div class="form-group"><label for="itemCategory">Category</label><input id="itemCategory" type="text" placeholder="e.g. Ice Cream"></div>
+                            <div class="form-group"><label for="itemDescription">Description</label><input id="itemDescription" type="text" placeholder="Optional"></div>
+                        </div>
+                        <button class="btn btn-success" type="submit">Add Item</button>
+                    </form>
+                </div>
+                <div class="table-section">
+                    <h2>Items</h2>
+                    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+                        <input id="importFile" type="file" accept=".xlsx,.xls,.csv" style="display:none">
+                        <button class="btn" id="importBtn">Import Items (Excel/CSV)</button>
+                        <small style="color:#6b7280">Columns supported: Name, Unit, Category, Description, Stock</small>
+                    </div>
+                    <div id="importPreview" class="hidden" style="margin-bottom:12px;background:#fff;padding:12px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.06)">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                            <div><strong>Import Preview</strong> — review rows and uncheck duplicates to skip</div>
+                            <div style="display:flex;gap:8px;align-items:center">
+                                <button class="btn" id="selectAllImport">Select All</button>
+                                <button class="btn" id="invertSelectImport">Invert</button>
+                                <button class="btn btn-success" id="confirmImport">Confirm Import</button>
+                                <button class="btn btn-danger" id="cancelImport">Cancel</button>
+                            </div>
+                        </div>
+                        <div style="max-height:260px;overflow:auto">
+                            <table id="importPreviewTable" style="width:100%;border-collapse:collapse">
+                                <thead><tr><th style="padding:8px">Use</th><th style="padding:8px">Name</th><th style="padding:8px">Unit</th><th style="padding:8px">Category</th><th style="padding:8px">Description</th><th style="padding:8px">Stock</th><th style="padding:8px">Status</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <table id="itemTable"><thead><tr><th>Name</th><th>Category</th><th>Unit</th><th>Description</th><th>Stock</th></tr></thead><tbody></tbody></table>
+                </div>
+            </section>
+            <section id="production" class="tab-content">
+                <div class="form-container">
+                    <h2 class="form-title">Production Entry</h2>
+                    <form id="productionForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="productionItem">Item</label><select id="productionItem" required></select></div>
+                            <div class="form-group"><label for="productionBatch">Batch Number</label><input id="productionBatch" type="text" required></div>
+                            <div class="form-group"><label for="productionQty">Quantity (Kg)</label><input id="productionQty" type="number" min="1" step="0.1" required></div>
+                            <div class="form-group"><label for="productionDate">Production Date</label><input id="productionDate" type="date" required></div>
+                            <div class="form-group"><label for="productionExpiry">Expiry Date</label><input id="productionExpiry" type="date"></div>
+                        </div>
+                        <button class="btn btn-success" type="submit">Save Production</button>
+                    </form>
+                </div>
+                <div class="table-section">
+                    <h2>Production Log</h2>
+                    <table id="productionTable"><thead><tr><th>Item</th><th>Batch</th><th>Qty</th><th>Date</th></tr></thead><tbody></tbody></table>
+                </div>
+            </section>
+            <section id="batch-inventory" class="tab-content">
+                <div class="table-section">
+                    <h2>Batch-wise Inventory</h2>
+                    <table id="batchTable"><thead><tr><th>Batch</th><th>Item</th><th>Produced</th><th>Dispatch</th><th>Returns</th><th>Damage</th><th>Available</th><th>Expiry</th><th>Status</th></tr></thead><tbody></tbody></table>
+                </div>
+            </section>
+            <section id="dispatch" class="tab-content">
+                <div class="form-container">
+                    <h2 class="form-title">Dispatch Stock</h2>
+                    <form id="dispatchForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="dispatchItem">Item</label><select id="dispatchItem" required></select></div>
+                            <div class="form-group"><label for="dispatchBatch">Batch</label><select id="dispatchBatch" required></select></div>
+                            <div class="form-group"><label for="dispatchQty">Quantity (Kg)</label><input id="dispatchQty" type="number" min="1" step="0.1" required></div>
+                            <div class="form-group"><label for="dispatchDestination">Destination</label><input id="dispatchDestination" type="text" placeholder="Customer / Location"></div>
+                        </div>
+                        <button class="btn btn-warning" type="submit">Record Dispatch</button>
+                    </form>
+                </div>
+                <div class="table-section">
+                    <h2>Dispatch Records</h2>
+                    <table id="dispatchTable"><thead><tr><th>Item</th><th>Batch</th><th>Qty</th><th>Destination</th><th>Date</th></tr></thead><tbody></tbody></table>
+                </div>
+            </section>
+            <section id="returns" class="tab-content">
+                <div class="form-container">
+                    <h2 class="form-title">Returns</h2>
+                    <form id="returnsForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="returnsItem">Item</label><select id="returnsItem" required></select></div>
+                            <div class="form-group"><label for="returnsBatch">Batch</label><select id="returnsBatch" required></select></div>
+                            <div class="form-group"><label for="returnsQty">Quantity (Kg)</label><input id="returnsQty" type="number" min="1" step="0.1" required></div>
+                            <div class="form-group"><label for="returnsReason">Reason</label><input id="returnsReason" type="text" placeholder="Reason for return"></div>
+                        </div>
+                        <button class="btn btn-success" type="submit">Record Return</button>
+                    </form>
+                </div>
+                <div class="table-section">
+                    <h2>Return Records</h2>
+                    <table id="returnsTable"><thead><tr><th>Item</th><th>Batch</th><th>Qty</th><th>Reason</th><th>Date</th></tr></thead><tbody></tbody></table>
+                </div>
+            </section>
+            <section id="damage" class="tab-content">
+                <div class="form-container">
+                    <h2 class="form-title">Damage Entry</h2>
+                    <form id="damageForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="damageItem">Item</label><select id="damageItem" required></select></div>
+                            <div class="form-group"><label for="damageBatch">Batch</label><select id="damageBatch" required></select></div>
+                            <div class="form-group"><label for="damageQty">Quantity (Kg)</label><input id="damageQty" type="number" min="1" step="0.1" required></div>
+                            <div class="form-group"><label for="damageReason">Reason</label><input id="damageReason" type="text" placeholder="Damage reason"></div>
+                        </div>
+                        <button class="btn btn-danger" type="submit">Record Damage</button>
+                    </form>
+                </div>
+                <div class="table-section">
+                    <h2>Damage Records</h2>
+                    <table id="damageTable"><thead><tr><th>Item</th><th>Batch</th><th>Qty</th><th>Reason</th><th>Date</th></tr></thead><tbody></tbody></table>
+                </div>
+            </section>
+            <section id="stock-ledger" class="tab-content">
+                <div class="table-section">
+                    <h2>Stock Ledger</h2>
+                    <table id="ledgerTable"><thead><tr><th>Item</th><th>Produced</th><th>Dispatched</th><th>Returned</th><th>Damaged</th><th>Available</th></tr></thead><tbody></tbody></table>
+                </div>
+            </section>
+            <section id="reports" class="tab-content">
+                <div class="form-container">
+                    <h2 class="form-title">Export Reports</h2>
+                    <p>Export current stock and transaction reports to CSV for review or import.</p>
+                    <button class="btn" id="exportAll">Export Full Inventory Report</button>
+                    <button class="btn" id="exportBatch">Export Batch Inventory</button>
+                </div>
+                <div class="table-section">
+                    <h2>Export Preview</h2>
+                    <div id="reportPreview">Use the buttons above to download CSV reports.</div>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+<div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+<!-- SheetJS for Excel/CSV parsing -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="js/app.js" defer></script>
+</body>
+</html>
