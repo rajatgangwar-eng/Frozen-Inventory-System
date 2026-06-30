@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "live-server --port=3000 --open=stock.html",
+    "dev": "live-server --port=3000 --open=/index.html",
     "start": "npm run dev"
   },
   "devDependencies": {

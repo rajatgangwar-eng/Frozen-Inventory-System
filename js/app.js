@@ -641,7 +641,11 @@ function setupForms() {
 
     refs.productionForm.addEventListener('submit', event => {
         event.preventDefault();
-        const itemId = refs.productionItem.value;
+        const itemId = refs.itemSelects.production.value;
+        if (!itemId) {
+            showToast('Select an item before saving production', 'danger');
+            return;
+        }
         addProduction({
             itemId,
             batchNumber: document.getElementById('productionBatch').value.trim(),
@@ -654,9 +658,15 @@ function setupForms() {
 
     refs.dispatchForm.addEventListener('submit', event => {
         event.preventDefault();
+        const itemId = refs.itemSelects.dispatch.value;
+        const batchId = refs.batchSelects.dispatch.value;
+        if (!itemId || !batchId) {
+            showToast('Select both item and batch before saving dispatch', 'danger');
+            return;
+        }
         addDispatch({
-            itemId: refs.dispatchItem.value,
-            batchId: refs.dispatchBatch.value,
+            itemId,
+            batchId,
             quantity: parseFloat(document.getElementById('dispatchQty').value),
             destination: document.getElementById('dispatchDestination').value.trim()
         });
@@ -665,9 +675,15 @@ function setupForms() {
 
     refs.returnsForm.addEventListener('submit', event => {
         event.preventDefault();
+        const itemId = refs.itemSelects.returns.value;
+        const batchId = refs.batchSelects.returns.value;
+        if (!itemId || !batchId) {
+            showToast('Select both item and batch before saving return', 'danger');
+            return;
+        }
         addReturn({
-            itemId: refs.returnsItem.value,
-            batchId: refs.returnsBatch.value,
+            itemId,
+            batchId,
             quantity: parseFloat(document.getElementById('returnsQty').value),
             reason: document.getElementById('returnsReason').value.trim()
         });
@@ -676,9 +692,15 @@ function setupForms() {
 
     refs.damageForm.addEventListener('submit', event => {
         event.preventDefault();
+        const itemId = refs.itemSelects.damage.value;
+        const batchId = refs.batchSelects.damage.value;
+        if (!itemId || !batchId) {
+            showToast('Select both item and batch before saving damage', 'danger');
+            return;
+        }
         addDamage({
-            itemId: refs.damageItem.value,
-            batchId: refs.damageBatch.value,
+            itemId,
+            batchId,
             quantity: parseFloat(document.getElementById('damageQty').value),
             reason: document.getElementById('damageReason').value.trim()
         });
